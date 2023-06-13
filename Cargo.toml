@@ -2,6 +2,11 @@
 name = "github-webhooks"
 version = "0.1.0-alpha.0"
 edition = "2021"
+description = "Utilities for handling GitHub webhooks in various Rust web frameworks"
+license = "MIT"
+authors = [
+	"Carter Himmel <carter@truffle.vip>"
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
