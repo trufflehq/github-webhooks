@@ -1,0 +1,25 @@
+[package]
+name = "github-webhooks"
+version = "0.1.0-alpha.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.71"
+async-trait = "0.1.68"
+github = { git = "https://github.com/bors-rs/bors.git", package = "github" }
+hex = "0.4.3"
+ring = "0.16.20"
+thiserror = "1.0.40"
+
+axum = { version = "0.6", features = ["macros", "headers", "tokio"], optional = true }
+headers = { version = "0.3.8", optional = true }
+http = { version = "0.2.9", optional = true }
+
+[features]
+default = ["axum"]
+axum = ["dep:axum", "dep:headers", "dep:http"]
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
