@@ -1,4 +1,4 @@
-name: imgdl
+name: Continuous Integration
 
 on:
   pull_request:
@@ -25,12 +25,12 @@ jobs:
             target
           key: ${{ runner.os }}-check-${{ matrix.runtime }}-${{ hashFiles('**/Cargo.lock') }}
 
-      - uses: action-rs/cargo@v1
+      - uses: actions-rs/cargo@v1
         name: Run Formatter
         with:
           command: fmt --check
 
-      - uses: action-rs/cargo@v1
+      - uses: actions-rs/cargo@v1
         name: Run Clippy
         with:
           command: clippy
@@ -40,7 +40,7 @@ jobs:
         with:
           command: test
 
-      - uses: action-rs/cargo@v1
+      - uses: actions-rs/cargo@v1
         name: Build Release
         with:
           command: build --release --all-features
