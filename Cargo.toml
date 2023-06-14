@@ -28,3 +28,7 @@ axum = ["dep:axum", "dep:headers", "dep:http"]
 
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
+axum-test-helper = "0.*"
+reqwest = { version = "0.11" }
+once_cell = { version = "1" } 
+tower = "0.4"

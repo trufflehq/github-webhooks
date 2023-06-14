@@ -27,7 +27,7 @@ impl Header for XHubSignature256 {
 			.next()
 			.and_then(|h| HeaderValue::to_str(h).ok())
 			.and_then(|s| s.get(7..))
-			.and_then(|s| Some(s.to_string()))
+			.map(|s| s.to_string())
 			.ok_or_else(headers::Error::invalid)?;
 
 		Ok(Self(value))

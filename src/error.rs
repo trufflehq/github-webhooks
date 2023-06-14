@@ -47,15 +47,8 @@ impl WebhooksError {
 /// to the client.
 impl IntoResponse for WebhooksError {
 	fn into_response(self) -> Response {
-		match self {
-			Self::InvalidSignature(ref e) => {
-				return (
-                    self.status_code(),
-                    format!("{:?}", e)
-                ).into_response()
-			}
-			// Other errors get mapped normally.
-			_ => (),
+		if let Self::InvalidSignature(ref e) = self {
+			return (self.status_code(), format!("{:?}", e)).into_response();
 		}
 
 		(self.status_code(), self.to_string()).into_response()

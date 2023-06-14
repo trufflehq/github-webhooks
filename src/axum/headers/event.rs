@@ -26,8 +26,7 @@ impl Header for XGithubEvent {
 		let value = values
 			.next()
 			.and_then(|h| HeaderValue::to_str(h).ok())
-			.and_then(|s| Some(s.to_string()))
-			// .and_then(|s| s.parse::<EventType>().ok())
+			.map(|s| s.to_string())
 			.ok_or_else(headers::Error::invalid)?;
 
 		Ok(Self(value))

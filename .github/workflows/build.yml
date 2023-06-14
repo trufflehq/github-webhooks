@@ -1,0 +1,46 @@
+name: imgdl
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-check-${{ matrix.runtime }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - uses: action-rs/cargo@v1
+        name: Run Formatter
+        with:
+          command: fmt --check
+
+      - uses: action-rs/cargo@v1
+        name: Run Clippy
+        with:
+          command: clippy
+
+      - uses: actions-rs/cargo@v1
+        name: Run Tests 
+        with:
+          command: test
+
+      - uses: action-rs/cargo@v1
+        name: Build Release
+        with:
+          command: build --release --all-features
