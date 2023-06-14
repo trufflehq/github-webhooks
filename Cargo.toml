@@ -13,7 +13,7 @@ authors = [
 [dependencies]
 anyhow = "1.0.71"
 async-trait = "0.1.68"
-# github = { version = "0.0.0", git = "https://github.com/bors-rs/bors.git", package = "github" }
+github = { version = "0.0.0", git = "https://github.com/bors-rs/bors.git", package = "github" }
 hex = "0.4.3"
 ring = "0.16.20"
 thiserror = "1.0.40"
