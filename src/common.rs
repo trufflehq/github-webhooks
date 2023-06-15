@@ -1,5 +1,5 @@
-use serde_json::Value;
 use ring::hmac::{self, Key};
+use serde_json::Value;
 
 use crate::error::{Result, WebhooksError};
 
@@ -17,10 +17,8 @@ impl GithubWebhook {
 		let verify = hmac::verify(key, &self.payload, &sha);
 
 		if verify.is_ok() {
-			Ok(
-				serde_json::from_slice::<Value>(&self.payload)
-				.map_err(|_| WebhooksError::ParseFailed)?
-			)
+			Ok(serde_json::from_slice::<Value>(&self.payload)
+				.map_err(|_| WebhooksError::ParseFailed)?)
 		} else {
 			Err(WebhooksError::VerifySignatureFailed)
 		}
