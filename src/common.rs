@@ -1,4 +1,4 @@
-use github::{Event, EventType};
+use serde_json::Value;
 use ring::hmac::{self, Key};
 
 use crate::error::{Result, WebhooksError};
@@ -11,20 +11,16 @@ pub struct GithubWebhook {
 
 impl GithubWebhook {
 	/// Verify the signature and parse the payload into an `Event`.
-	pub fn to_event(&self, key: &Key) -> Result<Event> {
+	pub fn to_event(&self, key: &Key) -> Result<Value> {
 		let sha = hex::decode(&self.signature)?;
 
 		let verify = hmac::verify(key, &self.payload, &sha);
 
 		if verify.is_ok() {
-			let event_type = self.event_type.parse::<EventType>().map_err(|_| {
-				WebhooksError::InvalidEventType {
-					r#type: self.event_type.clone(),
-				}
-			})?;
-
-			Ok(Event::from_json(event_type, &self.payload)
-				.map_err(|_| WebhooksError::ParseFailed)?)
+			Ok(
+				serde_json::from_slice::<Value>(&self.payload)
+				.map_err(|_| WebhooksError::ParseFailed)?
+			)
 		} else {
 			Err(WebhooksError::VerifySignatureFailed)
 		}
@@ -53,11 +49,6 @@ mod test {
 			Err(e) => panic!("Error: {:#?}", e),
 		};
 
-		match event {
-			Event::Ping(e) => {
-				assert!(e.zen.is_ascii())
-			}
-			_ => panic!("Expected Ping Event"),
-		}
+		assert!(event.get("zen").unwrap().to_string().is_ascii());
 	}
 }
